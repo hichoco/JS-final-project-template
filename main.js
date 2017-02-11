@@ -1,10 +1,12 @@
+
+
 var FPS = 70;
 var bgImg = document.createElement("img");
 var eImg = document.createElement("img");
 var bgim = document.createElement("img");
 var towerImg = document.createElement("img");
 
-bgImg.src = "images/map.png";
+bgImg.src = "images/kk.png";
 eImg.src = "images/jason.gif";
 bgim.src = "images/tower-btn.png";
 towerImg.src = "images/tower.png";
@@ -27,16 +29,59 @@ function draw() {
 
 }
 
+
 setInterval( draw, 1000/FPS)
+
+var enemypath =[
+	{x: 96,y: 64 };
+	{x: 288,y: 64 };
+	{x: 288,y: 352 };
+	{x: 512,y: 352 };
+];
+
+
 
 var enemy={
 	x: 100,
 	y: 450,
 	speedX:0,
 	speedY: -64,
+	pathDes : 0,
 	imove: function(){
-		this.x = this.x + this.speedX/FPS;
-		this.y = this.y + this.speedY/FPS;
+ if (isCollided(enemypath[this.pathDes].x,
+		 		enemypath[this.pathDes].y,
+		  		this.x,
+		   		this.y,
+		    	this.64/FPS,
+		 		this.64/FPS)) {
+
+ 		this.x = enemypath[this.pathDes].x;
+ 		this.y = enemypath[this.pathDes].y;
+ 		this.pathDes++;
+
+ 					if (this.x < enemypath[this.pathDes].x) {
+ 						this.speedX = 64
+ 						this.speedY = 0
+			} else if (this.x > enemypath[this.pathDes].x){
+						this.speedX = -64
+ 						this.speedY = 0
+			} else if (this.y < enemypath[this.pathDes].y) {
+						this.speedX = 0
+ 						this.speedY = 64
+			} else if (this.y > enemypath[this.pathDes].y) {
+						this.speedX = 0
+ 						this.speedY = -64
+
+			}
+
+			this.x = this.x + this.speedX/FPS;
+			this.y = this.y + this.speedY/FPS;
+
+
+
+
+		}
+		
 	}
 }
 
@@ -54,6 +99,8 @@ var tower = {
     y : 0,	
 }
 
+
+
 $("#gamecanvas").on("click",isbuild)
 
 function isbuild (event){
@@ -67,4 +114,17 @@ function isbuild (event){
 		
 		}
 	}
+}
+
+function isCollided(pointX,pointY, targetX, targetY, targetwidth, targetheight){
+	//如果在框框裡面
+	if (targetX <= pointX &&
+				   pointX<= targetX + targetwidth  &&
+		targetY <= pointY &&
+				   pointY<= targetY + targetheight) {
+		return true;
+	} else {
+		return false;
+}
+
 }
