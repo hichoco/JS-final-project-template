@@ -1,3 +1,5 @@
+var clock =0
+
 
 
 var FPS = 70;
@@ -7,18 +9,26 @@ var bgim = document.createElement("img");
 var towerImg = document.createElement("img");
 
 bgImg.src = "images/kk.png";
-eImg.src = "images/jason.gif";
+eImg.src = "images/jason.gif"
 bgim.src = "images/tower-btn.png";
 towerImg.src = "images/tower.png";
 
 var canvas = document.getElementById("gamecanvas");
 
 var ctx = canvas.getContext("2d");
-
 function draw() {
- enemy.imove()
+	clock++;
+	if ((clock%80)==0) {
+		var newEnemy = new Enemy();
+		enemies.push(newEnemy)
+
+	}
+		
 	ctx.drawImage(bgImg,0,0);
-	ctx.drawImage(eImg,enemy.x,enemy.y);
+	for (var i = 0; i < enemies.length; i++) {
+		enemies[i].imove();
+		ctx.drawImage(eImg,enemies[i].x,enemies[i].y);
+	}
 	ctx.drawImage(bgim,640-64,480-64,64,64);
 	if (build == true) {
 		ctx.drawImage(towerImg,move.x,move.y);
@@ -32,34 +42,36 @@ function draw() {
 
 setInterval( draw, 1000/FPS)
 
-var enemypath =[
-	{x: 96,y: 64 };
-	{x: 288,y: 64 };
-	{x: 288,y: 352 };
-	{x: 512,y: 352 };
+var enemypath = [
+	{x: 96,y: 64 },
+	{x: 288,y: 64 },
+	{x: 288,y: 352 },
+	{x: 512,y: 352 },
+	{x: 512,y: 32 }
 ];
 
 
 
-var enemy={
-	x: 100,
-	y: 450,
-	speedX:0,
-	speedY: -64,
-	pathDes : 0,
-	imove: function(){
- if (isCollided(enemypath[this.pathDes].x,
+function Enemy(){
+	this.x = 96,
+	this.y = 448,
+	this.speedX = 0,
+	this.speedY = -64,
+	this.pathDes = 0,
+	this.imove = function(){
+ 		if (isCollided(enemypath[this.pathDes].x,
 		 		enemypath[this.pathDes].y,
 		  		this.x,
 		   		this.y,
-		    	this.64/FPS,
-		 		this.64/FPS)) {
+				64/FPS,
+		 		64/FPS)) {
 
- 		this.x = enemypath[this.pathDes].x;
- 		this.y = enemypath[this.pathDes].y;
- 		this.pathDes++;
+ 			this.x = enemypath[this.pathDes].x;
+ 			this.y = enemypath[this.pathDes].y;
 
- 					if (this.x < enemypath[this.pathDes].x) {
+ 			this.pathDes++;
+
+ 			if (this.x < enemypath[this.pathDes].x) {
  						this.speedX = 64
  						this.speedY = 0
 			} else if (this.x > enemypath[this.pathDes].x){
@@ -73,17 +85,17 @@ var enemy={
  						this.speedY = -64
 
 			}
+		}else{
 
-			this.x = this.x + this.speedX/FPS;
-			this.y = this.y + this.speedY/FPS;
-
-
-
+			this.x += this.speedX/FPS;
+			this.y += this.speedY/FPS;
 
 		}
 		
 	}
 }
+
+var enemies = [] 
 
 $("#gamecanvas").on("mousemove",mouse)
 
