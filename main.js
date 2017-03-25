@@ -47,14 +47,14 @@ var canvas = document.getElementById("gamecanvas");function draw() {
 			ctx.drawImage(crosshairImg, enemies[id].x, enemies[id].y)
 		}
 	}
-	ctx.font = "20px Arial";
+	ctx.font = "30px Arial";
 	ctx.fillStyle = "blue";
 	ctx.fillText("Hp:" + Hp,32,30);
-	ctx.fillText("score:" + score,32,80);
+	ctx.fillText("score:" + score,32,70);
 	ctx.fillText("money:" + money,190,30);
 	if (Hp<=0) {
 		clearInterval(IntervalID)
-		ctx.fillText("gameover",120,300);
+		ctx.fillText("gameover",220,200);
 	}
 };
 	
@@ -151,7 +151,7 @@ function Tower() {
 	},
 	this.fireRate = 2,
 	this.readyToShootTime=2, 
-	this.damage=5,
+	this.damage=3,
 	this.x = 0,
     this.y = 0,
     this.range = 100,
