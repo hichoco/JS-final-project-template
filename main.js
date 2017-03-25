@@ -2,7 +2,7 @@ var clock =0
 
 var Hp = 100
 var score = 0
-var money = 50
+var money = 10000000000
 var FPS = 70;
 var bgImg = document.createElement("img");
 var eImg = document.createElement("img");
@@ -18,7 +18,7 @@ shootImg.src = "images/crosshair.png";
 
 var canvas = document.getElementById("gamecanvas");function draw() {
 	clock++;
-	if ((clock%80)==0) {
+	if ((clock%1)==0) {
 		var newEnemy = new Enemy();
 		enemies.push(newEnemy)
 
@@ -80,9 +80,9 @@ var enemypath = [
 function Enemy(){
 	this.x = 96;
 	this.y = 448;
-	this.Hp = 9;
+	this.Hp =90+score/10;
 	this.speedX = 0;
-	this.speedY = -64;
+	this.speedY = (-64+clock/100);
 	this.pathDes = 0;
 	this.imove = function(){
  		if (isCollided(enemypath[this.pathDes].x,
@@ -149,12 +149,12 @@ function Tower() {
 		ctx.stroke()
 		enemies[id].Hp -= this.damage
 	},
-	this.fireRate = 2,
-	this.readyToShootTime=2, 
-	this.damage=3,
+	this.fireRate = 0.000001,
+	this.readyToShootTime=0.00001, 
+	this.damage=45,
 	this.x = 0,
     this.y = 0,
-    this.range = 100,
+    this.range = 2000,
     this.aimingenemyID= null,
 	this.searchEnemy = function  (){
 		this.readyToShootTime -= 1/FPS
