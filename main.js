@@ -1,6 +1,6 @@
 var clock =0
 
-var hp = 100
+var Hp = 100
 var score = 0
 var money = 50
 var FPS = 70;
@@ -26,7 +26,7 @@ var canvas = document.getElementById("gamecanvas");function draw() {
 		
 		ctx.drawImage(bgImg,0,0);
 	for(var i = 0; i < enemies.length; i++){
-		if(enemies[i].HP <= 0){
+		if(enemies[i].Hp <= 0){
 			enemies.splice(i, 1);
 			score += 10;
 			money += 30;
@@ -37,7 +37,7 @@ var canvas = document.getElementById("gamecanvas");function draw() {
 	}
 	ctx.drawImage(bgimg,640-64,480-64,64,64);
 	if(build == true){
-		ctx.drawImage(towerImg,cursor.x-cursor.x%32,cursor.y-cursor.y%32);
+		ctx.drawImage(towerImg,move.x-move.x%32,move.y-move.y%32);
 	}
 	for(var i = 0; i < towers.length; i++){
 		ctx.drawImage(towerImg,towers[i].x,towers[i].y);
@@ -49,10 +49,10 @@ var canvas = document.getElementById("gamecanvas");function draw() {
 	}
 	ctx.font = "20px Arial";
 	ctx.fillStyle = "blue";
-	ctx.fillText("Hp:" + hp,32,30);
+	ctx.fillText("Hp:" + Hp,32,30);
 	ctx.fillText("score:" + score,32,80);
 	ctx.fillText("money:" + money,190,30);
-	if (hp<=0) {
+	if (Hp<=0) {
 		clearInterval(IntervalID)
 		ctx.fillText("gameover",120,300);
 	}
@@ -80,7 +80,7 @@ var enemypath = [
 function Enemy(){
 	this.x = 96;
 	this.y = 448;
-	this.Hp = 19.6;
+	this.Hp = 9;
 	this.speedX = 0;
 	this.speedY = -64;
 	this.pathDes = 0;
@@ -98,7 +98,7 @@ function Enemy(){
  			this.pathDes++;
  			if (this.pathDes == enemypath.length) {
  				this.Hp = 0;
- 				hp -= 10;
+ 				Hp-= 10;
  				return;
  			}
 
@@ -115,11 +115,12 @@ function Enemy(){
 						this.speedX = 0
  						this.speedY = -64
 
-			}
-		}else{
+				}
+			}else{
 
 			this.x += this.speedX/FPS;
 			this.y += this.speedY/FPS;
+			
 
 		}
 		
@@ -150,7 +151,7 @@ function Tower() {
 	},
 	this.fireRate = 2,
 	this.readyToShootTime=2, 
-	this.damage=9.8,
+	this.damage=5,
 	this.x = 0,
     this.y = 0,
     this.range = 100,
@@ -173,7 +174,7 @@ function Tower() {
 	};
 
 };
-
+var towers = [];
 
 $("#gamecanvas").on("click",isbuild)
 
@@ -186,8 +187,10 @@ function isbuild (event){
 		if (money>=20) {
 			money -= 20
 			if (build == true) {
-				tower.x = move.x - move.x%32
-				tower.y = move.y - move.y%32
+				var newTower = new Tower();
+				newTower.x = move.x - move.x%32;
+				newTower.y = move.y - move.y%32;
+				towers.push(newTower);
 			}
 		}
 
